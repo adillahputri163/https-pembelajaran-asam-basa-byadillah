@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab Interaktif Kekuatan Asam Basa</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        /* Back to Home Button */
+        .back-home-btn {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            z-index: 100;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s ease;
+            font-size: 0.95em;
+        }
+
+        .container {
+            max-width: 1800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            position: relative;
+        }
+
+        h1 {
+            text-align: center;
+            color: #667eea;
+            font-size: 2.8em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #764ba2;
+            font-size: 1.4em;
+            margin-bottom: 30px;
+            font-weight: normal;
+        }
+
+        .help-btn {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #ff6b6b, #ff8787);
+            color: white;
+            border: none;
+            padding: 0;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 28px;
+            box-shadow: 0 6px 20px rgba(255,107,107,0.4);
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .help-btn:hover {
+            background: linear-gradient(135deg, #ff5252, #ff6b6b);
+            transform: translateY(-3px) scale(1.1);
+            box-shadow: 0 8px 25px rgba(255,107,107,0.5);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.75);
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: white;
+            margin: 3% auto;
+            padding: 40px;
+            border-radius: 20px;
+            width: 85%;
+            max-width: 700px;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            animation: slideDown 0.3s;
+        }
+
+        .modal-content::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        .modal-content::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .modal-content::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 10px;
+        }
+
+        .modal-content::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #764ba2, #667eea);
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .close {
+            float: right;
+            font-size: 32px;
+            font-weight: bold;
+            cursor: pointer;
+            color: #999;
+            transition: all 0.3s;
+        }
+
+        .close:hover {
+            color: #333;
+            transform: rotate(90deg);
+        }
+
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1.2fr 2fr 1.3fr;
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        /* Info Panel (Kiri) */
+        .info-panel {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        .info-panel h3 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 12px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+        }
+
+        .legend-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+        }
+
+        .legend-color {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            margin-right: 15px;
+            border: 3px solid #ddd;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .legend-text {
+            font-size: 15px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .info-box {
+            margin-top: 20px;
+            padding: 18px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            border-left: 5px solid #667eea;
+        }
+
+        .info-box strong {
+            color: #667eea;
+            display: block;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        /* Beaker Container (Tengah) */
+        .beaker-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .beaker-with-ph {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .beaker {
+            width: 450px;
+            height: 550px;
+            border: 5px solid #2c3e50;
+            border-top: none;
+            border-bottom-left-radius: 40px;
+            border-bottom-right-radius: 40px;
+            position: relative;
+            background: linear-gradient(to bottom, transparent 16.7%, rgba(173, 216, 230, 0.2) 16.7%);
+            overflow: hidden;
+            box-shadow: inset 0 0 40px rgba(0,0,0,0.15), 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .beaker::before {
+            content: '1000 mL';
+            position: absolute;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-weight: bold;
+            font-size: 18px;
+            color: #2c3e50;
+            background: white;
+            padding: 5px 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .beaker::after {
+            content: '';
+            position: absolute;
+            top: 16.7%;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #2c3e50;
+        }
+
+        .liquid {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 83.3%;
+            transition: background-color 0.5s;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        /* pH Indicator Vertical */
+        .ph-indicator-vertical {
+            width: 60px;
+            height: 550px;
+            position: relative;
+        }
+
+        .ph-scale-vertical {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, 
+                #9b59b6 0%, 
+                #8e44ad 8%, 
+                #2980b9 22%, 
+                #2196f3 36%, 
+                #2ecc71 50%, 
+                #f1c40f 58%, 
+                #f39c12 72%, 
+                #e67e22 86%, 
+                #e74c3c 100%);
+            border-radius: 30px;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .ph-marker-vertical {
+            position: absolute;
+            right: -10px;
+            transform: translateY(-50%);
+            transition: top 0.5s;
+        }
+
+        .ph-arrow-vertical {
+            width: 0;
+            height: 0;
+            border-top: 15px solid transparent;
+            border-bottom: 15px solid transparent;
+            border-right: 20px solid #2c3e50;
+        }
+
+        .ph-value-vertical {
+            position: absolute;
+            right: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #2c3e50;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 16px;
+            white-space: nowrap;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+        }
+
+        .ph-labels-vertical {
+            position: absolute;
+            left: -40px;
+            top: 0;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 10px 0;
+        }
+
+        .ph-label-vertical {
+            font-size: 11px;
+            font-weight: bold;
+            color: #666;
+            text-align: right;
+        }
+
+        /* Equation under beaker */
+        .equation-under-beaker {
+            margin-top: 20px;
+            background: linear-gradient(135deg, #fff3cd 0%, #ffe8a1 100%);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border: 3px solid #ffc107;
+        }
+
+        .equation {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            font-family: 'Courier New', monospace;
+            text-align: center;
+        }
+
+        /* Control Panel (Kanan) */
+        .control-panel {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 25px;
+            border-radius: 15px;
+            color: white;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        .control-panel h3 {
+            margin-bottom: 25px;
+            font-size: 1.6em;
+            border-bottom: 3px solid rgba(255,255,255,0.3);
+            padding-bottom: 12px;
+        }
+
+        .control-group {
+            margin-bottom: 30px;
+        }
+
+        .control-group label {
+            display: block;
+            margin-bottom: 12px;
+            font-weight: bold;
+            font-size: 15px;
+        }
+
+        .type-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .type-btn {
+            padding: 15px;
+            border: 3px solid white;
+            background: rgba(255,255,255,0.15);
+            color: white;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .type-btn:hover {
+            background: rgba(255,255,255,0.25);
+            transform: translateY(-2px);
+        }
+
+        .type-btn.active {
+            background: white;
+            color: #667eea;
+            box-shadow: 0 5px 15px rgba(255,255,255,0.3);
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            margin: 12px 0;
+            appearance: none;
+            background: rgba(255,255,255,0.3);
+            border-radius: 5px;
+            outline: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            background: white;
+            cursor: pointer;
+            border-radius: 50%;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            background: white;
+            cursor: pointer;
+            border-radius: 50%;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        .value-display {
+            text-align: center;
+            background: rgba(255,255,255,0.25);
+            padding: 10px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 15px;
+        }
+
+        /* Bottom Section */
+        .bottom-section {
+            margin-top: 30px;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 25px;
+        }
+
+        .output-section {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            border: 3px solid #2196f3;
+        }
+
+        .output-section h3 {
+            color: #1565c0;
+            margin-bottom: 20px;
+            font-size: 1.6em;
+            text-align: center;
+        }
+
+        .output-box {
+            background: white;
+            padding: 18px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .output-label {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .output-value {
+            font-size: 22px;
+            font-weight: bold;
+            color: #1565c0;
+            font-family: 'Courier New', monospace;
+        }
+
+        .graph-section {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        .graph-section h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+            text-align: center;
+        }
+
+        .graph-container {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            height: 300px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            gap: 20px;
+            border: 2px solid #dee2e6;
+        }
+
+        .bar {
+            flex: 1;
+            background: linear-gradient(to top, #667eea, #764ba2);
+            border-radius: 10px 10px 0 0;
+            position: relative;
+            transition: all 0.5s;
+            box-shadow: 0 -3px 10px rgba(0,0,0,0.2);
+            min-height: 10px;
+        }
+
+        .bar-label {
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-weight: bold;
+            color: #333;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        .bar-value {
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-weight: bold;
+            color: #667eea;
+            font-size: 13px;
+            background: white;
+            padding: 4px 8px;
+            border-radius: 6px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            white-space: nowrap;
+        }
+
+        .graph-description {
+            margin-top: 50px;
+            padding: 15px;
+            background: #e7f3ff;
+            border-radius: 10px;
+            font-size: 14px;
+            color: #1565c0;
+            text-align: center;
+            border-left: 4px solid #2196f3;
+        }
+
+        sup {
+            font-size: 0.7em;
+            vertical-align: super;
+        }
+
+        sub {
+            font-size: 0.7em;
+            vertical-align: sub;
+        }
+    </style>
+</head>
+<body>
+    <!-- Back to Home Button -->
+    <a href="Modul 1_Landing Page.html" class="back-home-btn">
+        <span>Beranda</span>
+    </a>
+
+    <div class="container">
+        <button class="help-btn" onclick="openModal()" title="Cara Penggunaan">📖</button>
+        
+        <h1>⚗️ Simulasi Interaktif ⚗️</h1>
+        <h1>💧 Ionisasi Asam Basa dalam Air 💧</h1>
+        <h2>Proses Ionisasi Senyawa Asam dan Basa dalam Air</h2>
+
+        <div class="main-layout">
+            <!-- Panel Info (Kiri) -->
+            <div class="info-panel">
+                <h3>📊 Keterangan Molekul</h3>
+                <div id="legend"></div>
+                <div class="info-box">
+                    <strong>Volume Larutan:</strong>
+                    1 Liter (1000 mL)
+                </div>
+                <div class="info-box" id="solutionInfo">
+                </div>
+            </div>
+
+            <!-- Beaker + pH Vertical (Tengah) -->
+            <div class="beaker-container">
+                <div>
+                    <div class="beaker-with-ph">
+                        <div class="beaker">
+                            <div class="liquid" id="liquid"></div>
+                        </div>
+                        <div class="ph-indicator-vertical">
+                            <div class="ph-labels-vertical">
+                                <span class="ph-label-vertical">14</span>
+                                <span class="ph-label-vertical">12</span>
+                                <span class="ph-label-vertical">10</span>
+                                <span class="ph-label-vertical">8</span>
+                                <span class="ph-label-vertical">7</span>
+                                <span class="ph-label-vertical">6</span>
+                                <span class="ph-label-vertical">4</span>
+                                <span class="ph-label-vertical">2</span>
+                                <span class="ph-label-vertical">0</span>
+                            </div>
+                            <div class="ph-scale-vertical">
+                                <div class="ph-marker-vertical" id="phMarker">
+                                    <div class="ph-value-vertical" id="phValue">pH: 7.00</div>
+                                    <div class="ph-arrow-vertical"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="equation-under-beaker">
+                        <div class="equation" id="equation"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Panel Kontrol (Kanan) -->
+            <div class="control-panel">
+                <h3>⚙️ Panel Kontrol</h3>
+                
+                <div class="control-group">
+                    <label>Pilih Tipe Larutan:</label>
+                    <div class="type-buttons">
+                        <button class="type-btn active" onclick="setType('acid')">🔴 ASAM</button>
+                        <button class="type-btn" onclick="setType('base')">🔵 BASA</button>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label id="pkaLabel">pKa: <span id="pkaValue">4.76</span></label>
+                    <input type="range" id="pkaSlider" min="0" max="14" step="0.1" value="4.76" oninput="updateSimulation()">
+                    <div class="value-display">Ka: <span id="kaValue">1.74×10<sup>-5</sup></span></div>
+                </div>
+
+                <div class="control-group">
+                    <label>Konsentrasi: <span id="concValue">0.100</span> mol/L</label>
+                    <input type="range" id="concSlider" min="-3" max="0" step="0.001" value="-1" oninput="updateSimulation()">
+                    <div class="value-display"><span id="concDisplay">0.100 M</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Section -->
+        <div class="bottom-section">
+            <!-- Graph Section -->
+            <div class="graph-section">
+                <h3>📊 Grafik Distribusi Spesi dalam Larutan</h3>
+                <div class="graph-container" id="graphContainer"></div>
+                <div class="graph-description" id="graphDesc"></div>
+            </div>
+
+            <!-- Output Section -->
+            <div class="output-section">
+                <h3>📈 Hasil Perhitungan</h3>
+                <div class="output-box">
+                    <div class="output-label">[H<sup>+</sup>] atau [H<sub>3</sub>O<sup>+</sup>]</div>
+                    <div class="output-value" id="hOutput">-</div>
+                </div>
+                <div class="output-box">
+                    <div class="output-label">[OH<sup>-</sup>]</div>
+                    <div class="output-value" id="ohOutput">-</div>
+                </div>
+                <div class="output-box">
+                    <div class="output-label">Derajat Ionisasi (α)</div>
+                    <div class="output-value" id="alphaOutput">-</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="helpModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 style="color: #667eea; margin-bottom: 25px; text-align: center;">📖 Cara Penggunaan Simulasi</h2>
+            <ol style="line-height: 2.2; color: #333; font-size: 15px;">
+                <li><strong style="color: #667eea;">Pilih Tipe Larutan:</strong> Klik tombol "ASAM" atau "BASA" untuk memilih jenis larutan yang ingin disimulasikan</li>
+                <li><strong style="color: #667eea;">Atur pKa/pKb:</strong> Geser slider untuk mengubah kekuatan asam/basa. Nilai lebih kecil = lebih kuat (asam/basa kuat jika pKa/pKb < 2)</li>
+                <li><strong style="color: #667eea;">Atur Konsentrasi:</strong> Geser slider untuk mengubah konsentrasi larutan dari 0.001 hingga 1 mol/L</li>
+                <li><strong style="color: #667eea;">Amati Visualisasi:</strong> Perhatikan partikel-partikel berwarna bergerak di dalam beaker yang merepresentasikan molekul dan ion</li>
+                <li><strong style="color: #667eea;">Baca pH:</strong> Lihat indikator pH vertikal di sebelah kanan beaker dengan skala warna pelangi dari 0-14</li>
+                <li><strong style="color: #667eea;">Persamaan Reaksi:</strong> Perhatikan persamaan di bawah beaker - panah bolak-balik (⇌) untuk lemah, panah satu arah (→) untuk kuat</li>
+                <li><strong style="color: #667eea;">Perhatikan Output:</strong> Panel hasil menampilkan [H<sup>+</sup>], [OH<sup>-</sup>], dan derajat ionisasi (α) dalam format yang mudah dibaca</li>
+                <li><strong style="color: #667eea;">Analisis Grafik:</strong> Grafik batang menunjukkan distribusi spesi kimia dalam larutan</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        let particles = [];
+        let currentType = 'acid';
+        let animationFrame;
+
+        const moleculeColors = {
+            acid: {
+                'HA': '#ff6b6b',
+                'H2O': '#4dabf7',
+                'A-': '#ff8787',
+                'H3O+': '#ffd43b'
+            },
+            base: {
+                'B': '#51cf66',
+                'H2O': '#4dabf7',
+                'BH+': '#69db7c',
+                'OH-': '#ff6b6b'
+            }
+        };
+
+        const moleculeSizes = {
+            'HA': 14, 'H2O': 9, 'A-': 11, 'H3O+': 12,
+            'B': 14, 'BH+': 14, 'OH-': 11
+        };
+
+        function openModal() {
+            document.getElementById('helpModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('helpModal').style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('helpModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        function setType(type) {
+            currentType = type;
+            document.querySelectorAll('.type-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            const pkaLabel = document.getElementById('pkaLabel');
+            if (type === 'acid') {
+                pkaLabel.innerHTML = 'pKa: <span id="pkaValue">4.76</span>';
+            } else {
+                pkaLabel.innerHTML = 'pKb: <span id="pkaValue">4.76</span>';
+            }
+            
+            updateSimulation();
+        }
+
+        function formatExponential(value) {
+            const exp = value.toExponential(0);
+            const parts = exp.split('e');
+            const coefficient = parts[0];
+            const exponent = parseInt(parts[1]);
+            return `${coefficient} × 10<sup>${exponent}</sup> M`;
+        }
+
+        function updateSimulation() {
+            const pka = parseFloat(document.getElementById('pkaSlider').value);
+            const concLog = parseFloat(document.getElementById('concSlider').value);
+            const conc = Math.pow(10, concLog);
+
+            document.getElementById('pkaValue').textContent = pka.toFixed(2);
+            document.getElementById('concValue').textContent = conc.toFixed(3);
+            document.getElementById('concDisplay').textContent = conc.toFixed(3) + ' M';
+
+            const ka = Math.pow(10, -pka);
+            document.getElementById('kaValue').innerHTML = ka.toExponential(2).replace('e', '×10<sup>') + '</sup>';
+
+            let h, oh, alpha, ph;
+
+            if (currentType === 'acid') {
+                if (pka < 2) {
+                    alpha = 1;
+                    h = conc;
+                    document.getElementById('equation').innerHTML = 'HA + H<sub>2</sub>O → A<sup>-</sup> + H<sub>3</sub>O<sup>+</sup>';
+                } else {
+                    h = Math.sqrt(ka * conc);
+                    alpha = h / conc;
+                    document.getElementById('equation').innerHTML = 'HA + H<sub>2</sub>O ⇌ A<sup>-</sup> + H<sub>3</sub>O<sup>+</sup>';
+                }
+                oh = 1e-14 / h;
+                ph = -Math.log10(h);
+            } else {
+                if (pka < 2) {
+                    alpha = 1;
+                    oh = conc;
+                    document.getElementById('equation').innerHTML = 'B + H<sub>2</sub>O → BH<sup>+</sup> + OH<sup>-</sup>';
+                } else {
+                    const kb = Math.pow(10, -pka);
+                    oh = Math.sqrt(kb * conc);
+                    alpha = oh / conc;
+                    document.getElementById('equation').innerHTML = 'B + H<sub>2</sub>O ⇌ BH<sup>+</sup> + OH<sup>-</sup>';
+                }
+                h = 1e-14 / oh;
+                ph = 14 + Math.log10(oh);
+            }
+
+            alpha = Math.max(0.0001, Math.min(1, alpha));
+
+            document.getElementById('hOutput').innerHTML = formatExponential(h);
+            document.getElementById('ohOutput').innerHTML = formatExponential(oh);
+            document.getElementById('alphaOutput').textContent = alpha.toFixed(4);
+
+            updatePHIndicator(ph);
+            updateLegend();
+            updateSolutionInfo(pka, alpha);
+            createParticles(conc, alpha);
+            updateGraph(conc, alpha);
+        }
+
+        function updatePHIndicator(ph) {
+            const marker = document.getElementById('phMarker');
+            const value = document.getElementById('phValue');
+            
+            // pH scale is inverted (0 at bottom, 14 at top)
+            const position = 100 - ((ph / 14) * 100);
+            marker.style.top = position + '%';
+            value.textContent = 'pH: ' + ph.toFixed(2);
+
+            const liquid = document.getElementById('liquid');
+            let color;
+            if (ph < 3) color = '#e74c3c';
+            else if (ph < 5) color = '#e67e22';
+            else if (ph < 6) color = '#f39c12';
+            else if (ph < 7) color = '#f1c40f';
+            else if (ph < 8) color = '#2ecc71';
+            else if (ph < 10) color = '#3498db';
+            else if (ph < 12) color = '#2980b9';
+            else color = '#8e44ad';
+
+            liquid.style.backgroundColor = color + '50';
+        }
+
+        function updateLegend() {
+            const legend = document.getElementById('legend');
+            const colors = currentType === 'acid' ? moleculeColors.acid : moleculeColors.base;
+            
+            let html = '';
+            for (let [key, color] of Object.entries(colors)) {
+                let name = key;
+                if (currentType === 'acid') {
+                    if (key === 'HA') name = 'HA (Molekul Asam)';
+                    else if (key === 'H2O') name = 'H<sub>2</sub>O (Molekul Air)';
+                    else if (key === 'A-') name = 'A<sup>-</sup> (Ion Konjugat Asam)';
+                    else if (key === 'H3O+') name = 'H<sub>3</sub>O<sup>+</sup> (Ion Hidronium)';
+                } else {
+                    if (key === 'B') name = 'B (Molekul Basa)';
+                    else if (key === 'H2O') name = 'H<sub>2</sub>O (Molekul Air)';
+                    else if (key === 'BH+') name = 'BH<sup>+</sup> (Ion Konjugat Basa)';
+                    else if (key === 'OH-') name = 'OH<sup>-</sup> (Ion Hidroksida)';
+                }
+                html += `
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: ${color};"></div>
+                        <div class="legend-text">${name}</div>
+                    </div>
+                `;
+            }
+            legend.innerHTML = html;
+        }
+
+        function updateSolutionInfo(pka, alpha) {
+            const info = document.getElementById('solutionInfo');
+            let strength, type, description;
+            
+            if (currentType === 'acid') {
+                type = 'ASAM';
+                strength = pka < 2 ? 'KUAT' : 'LEMAH';
+                if (strength === 'KUAT') {
+                    description = 'Asam kuat terionisasi sempurna dalam air (α ≈ 1). Semua molekul HA berubah menjadi ion H<sub>3</sub>O<sup>+</sup> dan A<sup>-</sup>.';
+                } else {
+                    description = `Asam lemah terionisasi sebagian dalam air (α = ${(alpha * 100).toFixed(2)}%). Terdapat kesetimbangan antara molekul HA dengan ion-ionnya.`;
+                }
+            } else {
+                type = 'BASA';
+                strength = pka < 2 ? 'KUAT' : 'LEMAH';
+                if (strength === 'KUAT') {
+                    description = 'Basa kuat terionisasi sempurna dalam air (α ≈ 1). Semua molekul B berubah menjadi ion BH<sup>+</sup> dan OH<sup>-</sup>.';
+                } else {
+                    description = `Basa lemah terionisasi sebagian dalam air (α = ${(alpha * 100).toFixed(2)}%). Terdapat kesetimbangan antara molekul B dengan ion-ionnya.`;
+                }
+            }
+
+            info.innerHTML = `
+                <strong>Jenis Larutan:</strong> ${type} ${strength}<br><br>
+                <strong>Penjelasan:</strong><br>${description}
+            `;
+        }
+
+        function createParticles(conc, alpha) {
+            const liquid = document.getElementById('liquid');
+            liquid.innerHTML = '';
+            particles = [];
+
+            const totalParticles = Math.min(Math.floor(conc * 80), 70);
+            const ionizedCount = Math.floor(totalParticles * alpha);
+
+            if (currentType === 'acid') {
+                for (let i = 0; i < totalParticles - ionizedCount; i++) {
+                    addParticle('HA', liquid);
+                }
+                for (let i = 0; i < ionizedCount; i++) {
+                    addParticle('A-', liquid);
+                    addParticle('H3O+', liquid);
+                }
+            } else {
+                for (let i = 0; i < totalParticles - ionizedCount; i++) {
+                    addParticle('B', liquid);
+                }
+                for (let i = 0; i < ionizedCount; i++) {
+                    addParticle('BH+', liquid);
+                    addParticle('OH-', liquid);
+                }
+            }
+
+            for (let i = 0; i < 35; i++) {
+                addParticle('H2O', liquid);
+            }
+
+            if (animationFrame) cancelAnimationFrame(animationFrame);
+            animateParticles();
+        }
+
+        function addParticle(type, container) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            
+            const colors = currentType === 'acid' ? moleculeColors.acid : moleculeColors.base;
+            const size = moleculeSizes[type];
+            
+            particle.style.width = size + 'px';
+            particle.style.height = size + 'px';
+            particle.style.backgroundColor = colors[type];
+            particle.style.left = Math.random() * (430 - size) + 'px';
+            particle.style.top = Math.random() * (430 - size) + 'px';
+            
+            container.appendChild(particle);
+            
+            const speed = type === 'H2O' ? 0.3 : (type.includes('+') || type.includes('-') ? 0.7 : 0.5);
+            
+            particles.push({
+                element: particle,
+                x: parseFloat(particle.style.left),
+                y: parseFloat(particle.style.top),
+                vx: (Math.random() - 0.5) * speed,
+                vy: (Math.random() - 0.5) * speed,
+                size: size
+            });
+        }
+
+        function animateParticles() {
+            particles.forEach(p => {
+                p.x += p.vx;
+                p.y += p.vy;
+
+                if (p.x < 0 || p.x > 430 - p.size) p.vx *= -1;
+                if (p.y < 0 || p.y > 430 - p.size) p.vy *= -1;
+
+                p.element.style.left = p.x + 'px';
+                p.element.style.top = p.y + 'px';
+            });
+
+            animationFrame = requestAnimationFrame(animateParticles);
+        }
+
+        function updateGraph(conc, alpha) {
+            const container = document.getElementById('graphContainer');
+            const desc = document.getElementById('graphDesc');
+            
+            container.innerHTML = '';
+
+            const undissociated = conc * (1 - alpha);
+            const dissociated = conc * alpha;
+
+            const maxHeight = 250;
+            const maxVal = Math.max(undissociated, dissociated, 0.001);
+
+            if (currentType === 'acid') {
+                const bar1 = document.createElement('div');
+                bar1.className = 'bar';
+                bar1.style.height = (undissociated / maxVal * maxHeight) + 'px';
+                bar1.style.background = 'linear-gradient(to top, #ff6b6b, #ff8787)';
+                bar1.innerHTML = `
+                    <div class="bar-value">${undissociated.toExponential(2)} M</div>
+                    <div class="bar-label">HA<br>(Tidak Terionisasi)</div>
+                `;
+                container.appendChild(bar1);
+
+                const bar2 = document.createElement('div');
+                bar2.className = 'bar';
+                bar2.style.height = (dissociated / maxVal * maxHeight) + 'px';
+                bar2.style.background = 'linear-gradient(to top, #ffd43b, #ffe066)';
+                bar2.innerHTML = `
+                    <div class="bar-value">${dissociated.toExponential(2)} M</div>
+                    <div class="bar-label">A<sup>-</sup> + H<sub>3</sub>O<sup>+</sup><br>(Terionisasi)</div>
+                `;
+                container.appendChild(bar2);
+
+                desc.innerHTML = `Grafik menunjukkan ${((1-alpha)*100).toFixed(1)}% molekul HA tetap utuh dan ${(alpha*100).toFixed(1)}% terionisasi menjadi ion A<sup>-</sup> dan H<sub>3</sub>O<sup>+</sup>.`;
+            } else {
+                const bar1 = document.createElement('div');
+                bar1.className = 'bar';
+                bar1.style.height = (undissociated / maxVal * maxHeight) + 'px';
+                bar1.style.background = 'linear-gradient(to top, #51cf66, #69db7c)';
+                bar1.innerHTML = `
+                    <div class="bar-value">${undissociated.toExponential(2)} M</div>
+                    <div class="bar-label">B<br>(Tidak Terionisasi)</div>
+                `;
+                container.appendChild(bar1);
+
+                const bar2 = document.createElement('div');
+                bar2.className = 'bar';
+                bar2.style.height = (dissociated / maxVal * maxHeight) + 'px';
+                bar2.style.background = 'linear-gradient(to top, #ff6b6b, #ff8787)';
+                bar2.innerHTML = `
+                    <div class="bar-value">${dissociated.toExponential(2)} M</div>
+                    <div class="bar-label">BH<sup>+</sup> + OH<sup>-</sup><br>(Terionisasi)</div>
+                `;
+                container.appendChild(bar2);
+
+                desc.innerHTML = `Grafik menunjukkan ${((1-alpha)*100).toFixed(1)}% molekul B tetap utuh dan ${(alpha*100).toFixed(1)}% terionisasi menjadi ion BH<sup>+</sup> dan OH<sup>-</sup>.`;
+            }
+        }
+
+        updateSimulation();
+    </script>
+</body>
+</html>

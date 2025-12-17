@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pembelajaran Asam Basa - Interactive Learning</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            padding: 20px;
+            padding-bottom: 0;
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 10;
+            max-width: 900px;
+            animation: fadeInUp 1s ease;
+            position: relative;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero h1 {
+            font-size: 4em;
+            color: white;
+            margin-bottom: 20px;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+        }
+
+        .hero p {
+            font-size: 1.5em;
+            color: rgba(255,255,255,0.95);
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 18px 45px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            text-decoration: none;
+            font-size: 1.3em;
+            font-weight: bold;
+            border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        }
+
+        /* Floating Molecules Animation - Subtle */
+        .molecule {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: float 10s infinite ease-in-out;
+            pointer-events: none;
+        }
+
+        .molecule.global-molecule {
+            position: fixed;
+            z-index: 0;
+        }
+
+        .molecule.acid {
+            background: radial-gradient(circle, #ff6b6b, #ee5a6f);
+            box-shadow: 0 0 15px rgba(255, 107, 107, 0.4);
+        }
+
+        .molecule.base {
+            background: radial-gradient(circle, #4ecdc4, #45b7d1);
+            box-shadow: 0 0 15px rgba(78, 205, 196, 0.4);
+        }
+
+        .molecule.neutral {
+            background: radial-gradient(circle, #95e1d3, #7dc8c5);
+            box-shadow: 0 0 15px rgba(149, 225, 211, 0.4);
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            25% {
+                transform: translate(20px, -20px) rotate(90deg);
+            }
+            50% {
+                transform: translate(0, -40px) rotate(180deg);
+            }
+            75% {
+                transform: translate(-20px, -20px) rotate(270deg);
+            }
+        }
+
+        /* Learning Objectives Section */
+        .objectives-section {
+            padding: 20px 20px;
+            background: transparent;
+            position: relative;
+            margin-top: -50px;
+        }
+
+        .objectives-container {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 30px;
+            padding: 50px;
+            box-shadow: 
+                0 20px 60px rgba(0,0,0,0.15),
+                inset 0 1px 0 rgba(255,255,255,0.8);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            z-index: 10;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5em;
+            color: #667eea;
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(to right, #f093fb, #f5576c);
+            margin: 20px auto 0;
+            border-radius: 2px;
+        }
+
+        .objectives-list {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            margin-top: 50px;
+        }
+
+        .objective-item {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border-left: 5px solid #667eea;
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            animation: slideInLeft 0.5s ease;
+            position: relative;
+            z-index: 10;
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .objective-item:hover {
+            transform: translateX(10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+
+        .objective-number {
+            flex-shrink: 0;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .objective-text {
+            flex: 1;
+            color: #2d3436;
+            line-height: 1.8;
+            font-size: 1.05em;
+        }
+
+        /* Modules Section */
+        .modules-section {
+            padding: 80px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .modules-section .section-title {
+            color: white;
+        }
+
+        .modules-section .section-title::after {
+            background: linear-gradient(to right, #f093fb, #ffffff);
+        }
+
+        /* Add 3D perspective to modules grid */
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+            margin-top: 50px;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+            perspective: 1500px;
+        }
+
+        .module-card {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            text-align: center;
+            transition: all 0.4s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            border: 3px solid transparent;
+            z-index: 10;
+        }
+
+        /* Individual card colors */
+        .module-card.card-materi {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+        }
+
+        .module-card.card-materi::before {
+            background: linear-gradient(to right, #ff9a56, #ff6b6b);
+        }
+
+        .module-card.card-simulasi {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+        }
+
+        .module-card.card-simulasi::before {
+            background: linear-gradient(to right, #4ecdc4, #f093fb);
+        }
+
+        .module-card.card-lab {
+            background: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%);
+        }
+
+        .module-card.card-lab::before {
+            background: linear-gradient(to right, #11998e, #38ef7d);
+        }
+
+        .module-card.card-asesmen {
+            background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);
+        }
+
+        .module-card.card-asesmen::before {
+            background: linear-gradient(to right, #667eea, #f093fb);
+        }
+
+        .module-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .module-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .module-card:hover {
+            transform: translateY(-15px) scale(1.05);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+        }
+
+        .module-card:active {
+            transform: translateY(-10px) scale(1.02);
+        }
+
+        /* Selected state - Card moves forward in 3D */
+        .module-card.selected {
+            border-color: #f5576c;
+            transform: translateZ(100px) translateY(-20px) scale(1.1);
+            box-shadow: 
+                0 0 0 5px rgba(245, 87, 108, 0.3),
+                0 30px 80px rgba(0,0,0,0.5),
+                0 0 50px rgba(245, 87, 108, 0.4);
+            z-index: 10;
+        }
+
+        .module-card.selected::after {
+            content: '✓';
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            animation: checkmarkPop 0.3s ease;
+            box-shadow: 0 3px 10px rgba(245, 87, 108, 0.5);
+        }
+
+        @keyframes checkmarkPop {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .module-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+            display: inline-block;
+            animation: iconBounce 2s ease infinite;
+        }
+
+        @keyframes iconBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .module-card:hover .module-icon {
+            animation: iconBounce 2s ease infinite;
+        }
+
+        .module-card.selected .module-icon {
+            animation: iconBounce 2s ease infinite;
+        }
+
+        .module-card h3 {
+            color: #2d3436;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .module-card:hover h3 {
+            color: #667eea;
+            transform: scale(1.05);
+        }
+
+        .module-card.selected h3 {
+            color: #f5576c;
+        }
+
+        .module-card p {
+            color: #636e72;
+            line-height: 1.6;
+            font-size: 1em;
+        }
+
+        /* pH Scale Animation - More Subtle */
+        .ph-scale-animation {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 250px;
+            background: linear-gradient(to bottom,
+                #8e44ad 0%,
+                #9b59b6 7%,
+                #3498db 14%,
+                #2ecc71 35%,
+                #f1c40f 50%,
+                #e67e22 71%,
+                #e74c3c 100%
+            );
+            border-radius: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            z-index: 50;
+            opacity: 0.7;
+        }
+
+        .ph-indicator {
+            position: absolute;
+            width: 70px;
+            left: -10px;
+            height: 3px;
+            background: white;
+            animation: phMove 8s ease-in-out infinite;
+            box-shadow: 0 0 10px rgba(255,255,255,0.8);
+        }
+
+        @keyframes phMove {
+            0%, 100% { top: 10%; }
+            25% { top: 40%; }
+            50% { top: 50%; }
+            75% { top: 80%; }
+        }
+
+        .ph-labels {
+            position: absolute;
+            left: -35px;
+            font-weight: bold;
+            color: white;
+            font-size: 0.85em;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .ph-label-14 { top: 5px; }
+        .ph-label-7 { top: 50%; transform: translateY(-50%); }
+        .ph-label-0 { bottom: 5px; }
+
+        /* Footer */
+        .footer {
+            background: transparent;
+            color: white;
+            padding: 20px 20px 40px;
+            text-align: center;
+        }
+
+        .footer-container {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 30px;
+            padding: 50px;
+            box-shadow: 
+                0 20px 60px rgba(0,0,0,0.15),
+                inset 0 1px 0 rgba(255,255,255,0.8);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            z-index: 10;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .footer-content {
+            background: transparent;
+            padding: 0;
+            border-radius: 0;
+            box-shadow: none;
+            position: relative;
+            z-index: 10;
+        }
+
+         /* Footer */
+       footer {
+            position: relative;
+            z-index: 1;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        footer p {
+            font-size: 1.1em;
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5em;
+            }
+
+            .hero p {
+                font-size: 1.2em;
+            }
+
+            .section-title {
+                font-size: 2em;
+            }
+
+            .modules-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .ph-scale-animation {
+                display: none;
+            }
+
+            .objective-item {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+        }
+
+        /* Scroll Indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+            z-index: 10;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
+        }
+
+        .scroll-indicator span {
+            display: block;
+            width: 30px;
+            height: 50px;
+            border: 3px solid white;
+            border-radius: 20px;
+            position: relative;
+        }
+
+        .scroll-indicator span::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 6px;
+            height: 6px;
+            background: white;
+            border-radius: 50%;
+            animation: scroll 2s infinite;
+        }
+
+        @keyframes scroll {
+            0% { top: 10px; opacity: 1; }
+            100% { top: 30px; opacity: 0; }
+        }
+
+        /* Subtle background particles */
+        .bg-particle {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            animation: particleFloat 20s infinite ease-in-out;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes particleFloat {
+            0%, 100% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            10%, 90% {
+                opacity: 1;
+            }
+            50% {
+                transform: translateY(-100vh) translateX(50px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background particles for entire page -->
+    <div class="bg-particle" style="left: 5%; animation-delay: 0s; animation-duration: 15s;"></div>
+    <div class="bg-particle" style="left: 15%; animation-delay: 2s; animation-duration: 18s;"></div>
+    <div class="bg-particle" style="left: 25%; animation-delay: 4s; animation-duration: 20s;"></div>
+    <div class="bg-particle" style="left: 35%; animation-delay: 1s; animation-duration: 17s;"></div>
+    <div class="bg-particle" style="left: 45%; animation-delay: 6s; animation-duration: 19s;"></div>
+    <div class="bg-particle" style="left: 55%; animation-delay: 3s; animation-duration: 16s;"></div>
+    <div class="bg-particle" style="left: 65%; animation-delay: 5s; animation-duration: 21s;"></div>
+    <div class="bg-particle" style="left: 75%; animation-delay: 7s; animation-duration: 18s;"></div>
+    <div class="bg-particle" style="left: 85%; animation-delay: 9s; animation-duration: 19s;"></div>
+    <div class="bg-particle" style="left: 95%; animation-delay: 11s; animation-duration: 17s;"></div>
+
+    <!-- Floating Molecules throughout the page -->
+    <div class="molecule acid global-molecule" style="top: 5%; left: 8%; animation-delay: 0s;"></div>
+    <div class="molecule base global-molecule" style="top: 15%; right: 12%; animation-delay: 1s;"></div>
+    <div class="molecule neutral global-molecule" style="top: 25%; left: 15%; animation-delay: 2s;"></div>
+    <div class="molecule acid global-molecule" style="top: 35%; right: 8%; animation-delay: 3s;"></div>
+    <div class="molecule base global-molecule" style="top: 45%; left: 10%; animation-delay: 4s;"></div>
+    <div class="molecule neutral global-molecule" style="top: 55%; right: 15%; animation-delay: 5s;"></div>
+    <div class="molecule acid global-molecule" style="top: 65%; left: 12%; animation-delay: 6s;"></div>
+    <div class="molecule base global-molecule" style="top: 75%; right: 10%; animation-delay: 7s;"></div>
+    <div class="molecule neutral global-molecule" style="top: 85%; left: 18%; animation-delay: 8s;"></div>
+    <div class="molecule acid global-molecule" style="top: 95%; right: 20%; animation-delay: 9s;"></div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>🧪 Pembelajaran Asam Basa</h1>
+            <p>Jelajahi dunia kimia asam-basa melalui pembelajaran simulasi interaktif dan eksperimen virtual yang menyenangkan!</p>
+            <button class="cta-button" onclick="scrollToModules()">🚀 Mulai Belajar</button>
+        </div>
+
+        <div class="scroll-indicator">
+            <span></span>
+        </div>
+    </section>
+
+    <!-- Learning Objectives Section -->
+    <section class="objectives-section">
+        <div class="container">
+            <div class="objectives-container">
+                <h2 class="section-title">🎯 Tujuan Pembelajaran</h2>
+                <div class="objectives-list">
+                    <div class="objective-item">
+                        <div class="objective-number">1</div>
+                        <div class="objective-text">
+                            Menyebutkan pengertian asam kuat, asam lemah, basa kuat, dan basa lemah dengan benar.
+                        </div>
+                    </div>
+                    <div class="objective-item">
+                        <div class="objective-number">2</div>
+                        <div class="objective-text">
+                            Menjelaskan perbedaan antara asam kuat dan asam lemah berdasarkan derajat ionisasi dan konsentrasi ion H⁺ atau OH⁻ dalam larutan.
+                        </div>
+                    </div>
+                    <div class="objective-item">
+                        <div class="objective-number">3</div>
+                        <div class="objective-text">
+                            Menghitung pH asam kuat, asam lemah, basa kuat, dan basa lemah dengan menggunakan rumus yang sesuai dari hasil simulasi.
+                        </div>
+                    </div>
+                    <div class="objective-item">
+                        <div class="objective-number">4</div>
+                        <div class="objective-text">
+                            Mengidentifikasi indikator yang paling sensitif untuk membedakan asam lemah sampai asam kuat berdasarkan trayek warnanya dari hasil simulasi.
+                        </div>
+                    </div>
+                    <div class="objective-item">
+                        <div class="objective-number">5</div>
+                        <div class="objective-text">
+                            Mengevaluasi pemilihan jenis asam atau basa yang tepat untuk suatu proses kimia berdasarkan kekuatannya, keamanan, dan efektivitas reaksinya.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modules Section -->
+    <section class="modules-section" id="modules">
+        <div class="container">
+            <div class="modules-container">
+                <h2 class="section-title">📚 Modul Pembelajaran</h2>
+                <div class="modules-grid">
+                <a href="Modul 2_Materi Asam Basa.html" class="module-card card-materi">
+                    <div class="module-icon">📖</div>
+                    <h3>Materi Asam Basa</h3>
+                    <p>Pelajari konsep dasar, teori Arrhenius, kekuatan asam-basa, dan indikator dengan materi lengkap dan mudah dipahami.</p>
+                </a>
+
+                <a href="Modul 3_Simulasi Ionisasi Asam Basa.html" class="module-card card-materi">
+                    <div class="module-icon">⚗️</div>
+                    <h3>Simulasi Interaktif</h3>
+                    <p>Amati proses ionisasi asam basa dalam air secara visual dan interaktif untuk memahami perbedaan kekuatan asam-basa.</p>
+                </a>
+
+                <a href="Modul 4_Indikator Asam Basa.html" class="module-card card-materi">
+                    <div class="module-icon">🔬</div>
+                    <h3>Lab Virtual</h3>
+                    <p>Uji berbagai larutan asam dengan indikator untuk menemukan indikator paling sensitif pada rentang pH tertentu.</p>
+                </a>
+
+                <a href="Modul 5_Refleksi.html" class="module-card card-materi">
+                    <div class="module-icon">✅</div>
+                    <h3>Asesmen & Refleksi</h3>
+                    <p>Uji pemahaman Anda dengan kuis interaktif dan refleksikan pembelajaran untuk penguasaan yang lebih mendalam.</p>
+                </a>
+            </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- pH Scale Animation -->
+    <div class="ph-scale-animation">
+        <div class="ph-indicator"></div>
+        <div class="ph-labels ph-label-14">14</div>
+        <div class="ph-labels ph-label-7">7</div>
+        <div class="ph-labels ph-label-0">0</div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-content">
+                    <p class="credit">✨ Dikembangkan oleh Adillah Putri Nur Cahyani ✨</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Select module card
+        function selectModule(event, card) {
+            // Remove selected class from all cards
+            document.querySelectorAll('.module-card').forEach(c => {
+                c.classList.remove('selected');
+            });
+            
+            // Add selected class to clicked card
+            card.classList.add('selected');
+            
+            // Optional: You can prevent default navigation and add custom behavior
+            // event.preventDefault();
+        }
+
+        // Smooth scroll to modules
+        function scrollToModules() {
+            const modulesSection = document.getElementById('modules');
+            modulesSection.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+
+        // Smooth scroll for all anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                // Only prevent default for module section scroll
+                if (href === '#modules') {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                }
+            });
+        });
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateX(0)';
+                    }, index * 100);
+                }
+            });
+        }, observerOptions);
+
+        // Observe objective items
+        document.querySelectorAll('.objective-item').forEach((el, index) => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateX(-30px)';
+            el.style.transition = `all 0.6s ease ${index * 0.1}s`;
+            observer.observe(el);
+        });
+
+        // Observe module cards
+        document.querySelectorAll('.module-card').forEach((el, index) => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = `all 0.6s ease ${index * 0.15}s`;
+            
+            const moduleObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            
+            moduleObserver.observe(el);
+        });
+
+        console.log('%c🧪 Selamat Datang di Pembelajaran Asam Basa! 🧪', 'font-size: 20px; color: #667eea; font-weight: bold;');
+        console.log('%cDikembangkan oleh Adillah Putri Nur Cahyani', 'font-size: 14px; color: #f093fb;');
+    </script>
+</body>
+</html>

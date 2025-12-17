@@ -1,0 +1,1614 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Quest - Rahasia Indikator Asam Basa</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        /* Back to Home Button */
+        .back-home-btn {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            z-index: 100;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s ease;
+            font-size: 0.95em;
+        }
+
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            padding: 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            color: rgba(255,255,255,0.95);
+            font-size: 1.1em;
+        }
+
+        .help-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.8em;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            animation: pulse 2s infinite;
+        }
+
+        .help-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Help Modal */
+        .help-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .help-modal.active {
+            display: flex;
+        }
+
+        .help-content {
+            background: white;
+            padding: 40px;
+            border-radius: 30px;
+            max-width: 800px;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            position: relative;
+            animation: slideUp 0.5s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .help-content h2 {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .help-content h3 {
+            color: #f5576c;
+            font-size: 1.5em;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        .help-content p, .help-content ul {
+            color: #2d3436;
+            font-size: 1.1em;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .help-content ul {
+            margin-left: 25px;
+        }
+
+        .help-content li {
+            margin: 10px 0;
+        }
+
+        .close-help {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 40px;
+            height: 40px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.5em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .close-help:hover {
+            background: #c0392b;
+            transform: rotate(90deg);
+        }
+
+        .help-section {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 15px 0;
+            border-left: 5px solid #667eea;
+        }
+
+        .mode-selector {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .mode-btn {
+            padding: 15px 30px;
+            background: white;
+            border: 3px solid #667eea;
+            border-radius: 15px;
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #667eea;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .mode-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .mode-btn.active {
+            background: #667eea;
+            color: white;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        /* Experiment Mode */
+        .experiment-area {
+            display: grid;
+            grid-template-columns: 250px 1fr 250px;
+            gap: 30px;
+        }
+
+        .solution-panel {
+            background: linear-gradient(135deg, #d4f1f4 0%, #a8d8ea 100%);
+            padding: 20px;
+            border-radius: 20px;
+            height: fit-content;
+        }
+
+        .indicator-panel {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            padding: 20px;
+            border-radius: 20px;
+            height: fit-content;
+        }
+
+        .solution-panel h3, .indicator-panel h3 {
+            color: #d63031;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .section-divider {
+            height: 3px;
+            background: linear-gradient(to right, #667eea, #764ba2);
+            margin: 20px 0;
+            border-radius: 2px;
+        }
+
+        .solution-list, .indicator-list {
+            margin-bottom: 15px;
+        }
+
+        .solution-item, .indicator-item {
+            background: white;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 10px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .solution-item:hover, .indicator-item:hover {
+            border-color: #667eea;
+            transform: translateX(5px);
+        }
+
+        .solution-item.selected, .indicator-item.selected {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .solution-item strong, .indicator-item strong {
+            display: block;
+            font-size: 1.1em;
+        }
+
+        .solution-item small, .indicator-item small {
+            opacity: 0.8;
+        }
+
+        .lab-area {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .beakers-container {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .beaker-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .beaker {
+            width: 200px;
+            height: 300px;
+            border: 5px solid #2d3436;
+            border-radius: 20px 20px 40px 40px;
+            position: relative;
+            background: linear-gradient(to bottom, transparent 20%, var(--solution-color, #e3f2fd) 20%);
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.1);
+            transition: background 0.5s ease;
+        }
+
+        .beaker-label {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 5px 15px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .ph-scale-vertical {
+            width: 50px;
+            height: 300px;
+            background: linear-gradient(to bottom,
+                #8e44ad 0%,
+                #9b59b6 7%,
+                #3498db 14%,
+                #2ecc71 21%,
+                #f1c40f 35%,
+                #f39c12 50%,
+                #e67e22 71%,
+                #e74c3c 100%
+            );
+            border-radius: 10px;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .ph-marker {
+            position: absolute;
+            left: -10px;
+            width: 70px;
+            height: 4px;
+            background: #2d3436;
+            transition: top 0.3s ease;
+        }
+
+        .ph-marker::after {
+            content: attr(data-ph);
+            position: absolute;
+            right: -35px;
+            top: -10px;
+            background: white;
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 0.9em;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .ph-slider-container {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .ph-slider-container h4 {
+            margin-bottom: 10px;
+            color: #2d3436;
+        }
+
+        .ph-slider {
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: linear-gradient(to right,
+                #e74c3c 0%,
+                #e67e22 14%,
+                #f39c12 28%,
+                #f1c40f 42%,
+                #2ecc71 57%,
+                #3498db 71%,
+                #9b59b6 85%,
+                #8e44ad 100%
+            );
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .ph-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: white;
+            border: 3px solid #2d3436;
+            cursor: pointer;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+        }
+
+        .ph-value-display {
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #667eea;
+            margin-top: 10px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            color: white;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #2ecc71, #00b894);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+        /* Challenge Mode */
+        .challenge-area {
+            text-align: center;
+        }
+
+        .challenge-question {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+        }
+
+        .challenge-question h3 {
+            font-size: 1.8em;
+            color: #2d3436;
+            margin-bottom: 20px;
+        }
+
+        .mystery-beaker {
+            width: 250px;
+            height: 350px;
+            margin: 0 auto 20px;
+            border: 6px solid #2d3436;
+            border-radius: 25px 25px 50px 50px;
+            background: linear-gradient(to bottom, transparent 15%, var(--mystery-color, #e3f2fd) 15%);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            position: relative;
+        }
+
+        .mystery-label {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 8px 20px;
+            border-radius: 15px;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .answer-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .answer-btn {
+            padding: 20px;
+            background: white;
+            border: 3px solid #667eea;
+            border-radius: 15px;
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #667eea;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .answer-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .answer-btn.correct {
+            background: #2ecc71;
+            border-color: #2ecc71;
+            color: white;
+        }
+
+        .answer-btn.wrong {
+            background: #e74c3c;
+            border-color: #e74c3c;
+            color: white;
+        }
+
+        .score-panel {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .score-panel h4 {
+            font-size: 1.5em;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .feedback-box {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            border-left: 5px solid #d63031;
+        }
+
+        .feedback-box h4 {
+            color: #d63031;
+            margin-bottom: 10px;
+        }
+
+        /* Guided Mode */
+        .guided-area {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .trayek-chart {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .trayek-chart h3 {
+            color: #667eea;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 400px;
+        }
+
+        .indicator-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            gap: 15px;
+        }
+
+        .indicator-name {
+            width: 150px;
+            font-weight: bold;
+            color: #2d3436;
+        }
+
+        .color-bar {
+            flex: 1;
+            height: 40px;
+            border-radius: 10px;
+            position: relative;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+
+        .transition-marker {
+            position: absolute;
+            width: 3px;
+            height: 50px;
+            background: #2d3436;
+            top: -5px;
+            cursor: pointer;
+        }
+
+        .transition-marker:hover {
+            background: #e74c3c;
+            width: 5px;
+        }
+
+        /* Artistic Mode */
+        .artistic-area {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .mixer-panel {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            padding: 30px;
+            border-radius: 20px;
+        }
+
+        .mixer-panel h3 {
+            color: #2d3436;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .indicator-mixer {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .mixer-slot {
+            width: 150px;
+            height: 150px;
+            border: 4px dashed #667eea;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .mixer-slot:hover {
+            border-color: #f5576c;
+            transform: scale(1.05);
+        }
+
+        .mixer-slot.filled {
+            border-style: solid;
+            background: var(--indicator-color, white);
+        }
+
+        .mixed-result {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .result-beaker {
+            width: 250px;
+            height: 350px;
+            margin: 20px auto;
+            border: 6px solid #2d3436;
+            border-radius: 25px 25px 50px 50px;
+            background: linear-gradient(to bottom, transparent 15%, var(--mixed-color, #e3f2fd) 15%);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .result-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+    <!-- Back to Home Button -->
+    <a href="Modul 1_Landing Page.html" class="back-home-btn">
+        <span class="back-icon">←</span>
+    </a>
+
+    <!-- Help Button -->
+    <button class="help-btn" onclick="toggleHelp()">❓</button>
+
+    <!-- Help Modal -->
+    <div class="help-modal" id="helpModal">
+        <div class="help-content">
+            <button class="close-help" onclick="toggleHelp()">×</button>
+            <h2>📖 Panduan Penggunaan Color Quest</h2>
+            
+            <div class="help-section">
+                <h3>🔬 Mode Eksperimen</h3>
+                <p><strong>Cara Menggunakan:</strong></p>
+                <ul>
+                    <li>Pilih <strong>larutan</strong> dari panel kanan (asam/basa, kuat/lemah)</li>
+                    <li>Pilih <strong>indikator</strong> yang ingin diuji</li>
+                    <li>Klik tombol <strong>"Tambah Indikator ke Beaker"</strong></li>
+                    <li>Perhatikan perubahan warna pada beaker dan skala pH</li>
+                    <li>Gunakan <strong>slider pH</strong> untuk simulasi perubahan pH</li>
+                    <li>Klik <strong>"Tambah Beaker Kedua"</strong> untuk membandingkan dua indikator</li>
+                </ul>
+                <p><strong>Tips:</strong> Indikator paling sensitif adalah yang berubah warna dalam rentang pH larutan yang dipilih!</p>
+            </div>
+
+            <div class="help-section">
+                <h3>🎯 Mode Indikator Detective</h3>
+                <p><strong>Cara Bermain:</strong></p>
+                <ul>
+                    <li>Perhatikan <strong>warna</strong> yang muncul di beaker misteri</li>
+                    <li>Perhatikan <strong>indikator</strong> yang digunakan</li>
+                    <li>Pilih jawaban: Asam Kuat, Asam Lemah, Basa Kuat, atau Basa Lemah</li>
+                    <li>Dapatkan <strong>+10 poin</strong> untuk setiap jawaban benar</li>
+                    <li>Mainkan 5 ronde untuk melihat skor akhir!</li>
+                </ul>
+                <p><strong>Strategi:</strong> Ingat trayek pH setiap indikator dan warna karakteristiknya!</p>
+            </div>
+
+            <div class="help-section">
+                <h3>📊 Mode Eksperimen Terpandu</h3>
+                <p><strong>Cara Menggunakan:</strong></p>
+                <ul>
+                    <li>Lihat <strong>grafik trayek warna</strong> untuk semua indikator</li>
+                    <li>Klik pada <strong>garis hitam vertikal</strong> untuk menandai titik transisi</li>
+                    <li>Titik transisi menunjukkan pH dimana perubahan warna paling tajam</li>
+                    <li>Bandingkan sensitivitas antar indikator pada rentang pH berbeda</li>
+                </ul>
+                <p><strong>Insight:</strong> Setiap indikator sensitif pada rentang pH tertentu!</p>
+            </div>
+
+            <div class="help-section">
+                <h3>🎨 Mode Artistik</h3>
+                <p><strong>Cara Mencampur:</strong></p>
+                <ul>
+                    <li>Pilih <strong>indikator pertama</strong> dari panel kanan</li>
+                    <li>Klik <strong>slot kiri</strong> untuk memasukkannya</li>
+                    <li>Pilih <strong>indikator kedua</strong></li>
+                    <li>Klik <strong>slot tengah</strong> untuk memasukkannya</li>
+                    <li>Klik tombol <strong>"Campurkan!"</strong></li>
+                    <li>Lihat hasil campuran dan karakteristiknya!</li>
+                </ul>
+                <p><strong>Eksperimen:</strong> Coba kombinasi berbeda untuk melihat rentang pH gabungan!</p>
+            </div>
+
+            <div class="help-section">
+                <h3>🧪 Daftar Indikator & Trayek</h3>
+                <ul>
+                    <li><strong>Metil Jingga:</strong> pH 3.1–4.4 (Merah → Jingga)</li>
+                    <li><strong>Bromtimol Biru:</strong> pH 6.0–7.6 (Kuning → Biru)</li>
+                    <li><strong>Fenolftalein:</strong> pH 8.3–10.0 (Tidak berwarna → Merah muda)</li>
+                    <li><strong>Lakmus:</strong> pH 4.5–8.3 (Merah → Biru)</li>
+                    <li><strong>Kubis Ungu:</strong> pH 2–12 (Merah → Ungu → Hijau)</li>
+                    <li><strong>Kunyit:</strong> pH 7.5–9.0 (Kuning → Coklat)</li>
+                </ul>
+            </div>
+
+            <div class="help-section">
+                <h3>💡 Tips Pembelajaran</h3>
+                <ul>
+                    <li>Asam kuat memiliki pH mendekati 0-1</li>
+                    <li>Asam lemah memiliki pH sekitar 4-6</li>
+                    <li>Basa lemah memiliki pH sekitar 9-10</li>
+                    <li>Basa kuat memiliki pH mendekati 13-14</li>
+                    <li>Pilih indikator yang trayeknya sesuai dengan pH larutan untuk hasil optimal</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>🧪 COLOR QUEST - RAHASIA INDIKATOR ASAM BASA 🎨</h1>
+            <p>Virtual Color Lab: Temukan Rahasia Perubahan Warna Indikator!</p>
+        </div>
+
+        <div class="mode-selector">
+            <button class="mode-btn active" onclick="switchMode('experiment')">🔬 Mode Eksperimen</button>
+            <button class="mode-btn" onclick="switchMode('challenge')">🎯 Indikator Detective</button>
+            <button class="mode-btn" onclick="switchMode('guided')">📊 Eksperimen Terpandu</button>
+            <button class="mode-btn" onclick="switchMode('artistic')">🎨 Mode Artistik</button>
+        </div>
+
+        <div class="content">
+            <!-- Experiment Mode -->
+            <div id="experimentMode" class="experiment-area">
+                <div class="solution-panel">
+                    <h3>🧪 Pilih Larutan</h3>
+                    <div class="solution-list" id="solutionList"></div>
+                </div>
+
+                <div class="lab-area">
+                    <div class="beakers-container" id="beakersContainer">
+                        <div class="beaker-wrapper">
+                            <div style="display: flex; gap: 15px; align-items: center;">
+                                <div class="beaker" id="beaker1">
+                                    <div class="beaker-label" id="beakerLabel1">Pilih Larutan</div>
+                                </div>
+                                <div class="ph-scale-vertical">
+                                    <div class="ph-marker" id="phMarker1" data-ph="7" style="top: 50%;"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="beaker-wrapper hidden" id="beaker2Wrapper">
+                            <div style="display: flex; gap: 15px; align-items: center;">
+                                <div class="beaker" id="beaker2">
+                                    <div class="beaker-label" id="beakerLabel2">Beaker 2</div>
+                                </div>
+                                <div class="ph-scale-vertical">
+                                    <div class="ph-marker" id="phMarker2" data-ph="7" style="top: 50%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ph-slider-container">
+                        <h4>🎚️ Atur pH Larutan (Mode Simulasi)</h4>
+                        <input type="range" class="ph-slider" id="phSlider" min="0" max="14" step="0.1" value="7">
+                        <div class="ph-value-display" id="phValueDisplay">pH: 7.0</div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" onclick="addIndicator()">💧 Tambah Indikator ke Beaker</button>
+                        <button class="btn btn-secondary" onclick="toggleSecondBeaker()">➕ Tambah Beaker Kedua</button>
+                        <button class="btn btn-success" onclick="resetExperiment()">🔄 Reset</button>
+                    </div>
+
+                    <div class="feedback-box hidden" id="experimentFeedback">
+                        <h4>📋 Hasil Eksperimen</h4>
+                        <p id="experimentResult"></p>
+                    </div>
+                </div>
+
+                <div class="indicator-panel">
+                    <h3>🎨 Pilih Indikator</h3>
+                    <div class="indicator-list" id="indicatorList"></div>
+                </div>
+            </div>
+
+            <!-- Challenge Mode -->
+            <div id="challengeMode" class="challenge-area hidden">
+                <div class="score-panel">
+                    <h4>Skor: <span id="challengeScore">0</span> / Ronde: <span id="challengeRound">1</span>/5</h4>
+                </div>
+
+                <div class="challenge-question">
+                    <h3>🔍 Tebak Jenis Larutan!</h3>
+                    <div class="mystery-beaker" id="mysteryBeaker">
+                        <div class="mystery-label" id="mysteryLabel">Indikator: ?</div>
+                    </div>
+                    <p style="font-size: 1.2em; margin-top: 20px;">Warna yang terlihat: <strong id="colorDescription">-</strong></p>
+                </div>
+
+                <div class="answer-options" id="answerOptions"></div>
+
+                <div class="feedback-box hidden" id="challengeFeedback">
+                    <h4>💡 Penjelasan</h4>
+                    <p id="challengeExplanation"></p>
+                </div>
+
+                <div class="action-buttons" style="margin-top: 20px;">
+                    <button class="btn btn-primary" onclick="nextChallenge()">➡️ Soal Berikutnya</button>
+                    <button class="btn btn-secondary" onclick="restartChallenge()">🔄 Mulai Ulang</button>
+                </div>
+            </div>
+
+            <!-- Guided Mode -->
+            <div id="guidedMode" class="guided-area hidden">
+                <div class="trayek-chart">
+                    <h3>📊 Trayek Perubahan Warna vs pH</h3>
+                    <div class="chart-container" id="trayekChart"></div>
+                </div>
+
+                <div class="feedback-box">
+                    <h4>💡 Cara Menggunakan</h4>
+                    <p>Klik pada garis vertikal hitam untuk menandai titik transisi paling tajam pada setiap indikator. Ini menunjukkan daerah pH dimana indikator paling sensitif!</p>
+                </div>
+            </div>
+
+            <!-- Artistic Mode -->
+            <div id="artisticMode" class="artistic-area hidden">
+                <div class="mixer-panel">
+                    <h3>🎨 Campurkan Dua Indikator</h3>
+                    <div class="indicator-mixer">
+                        <div class="mixer-slot" id="mixerSlot1" onclick="selectForMixer(1)">
+                            <span>Klik untuk pilih<br>Indikator 1</span>
+                        </div>
+                        <div style="font-size: 3em; align-self: center;">+</div>
+                        <div class="mixer-slot" id="mixerSlot2" onclick="selectForMixer(2)">
+                            <span>Klik untuk pilih<br>Indikator 2</span>
+                        </div>
+                        <div style="font-size: 3em; align-self: center;">=</div>
+                        <div class="mixer-slot" id="mixerResult" style="cursor: default;">
+                            <span>Hasil Campuran</span>
+                        </div>
+                    </div>
+                    <div class="action-buttons" style="margin-top: 20px;">
+                        <button class="btn btn-primary" onclick="mixIndicators()">⚗️ Campurkan!</button>
+                        <button class="btn btn-secondary" onclick="resetMixer()">🔄 Reset Mixer</button>
+                    </div>
+                </div>
+
+                <div class="mixed-result hidden" id="mixedResult">
+                    <h3>🧪 Hasil Pencampuran</h3>
+                    <div class="result-beaker" id="resultBeaker"></div>
+                    <div class="result-info" id="resultInfo">
+                        <h4>Karakteristik Campuran:</h4>
+                        <p id="mixedCharacteristics"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data definitions
+        const solutions = {
+            acidStrong: [
+                { id: 'HCl', name: 'HCl', fullName: 'Asam Klorida', pH: 1, type: 'Asam Kuat' },
+                { id: 'HNO3', name: 'HNO₃', fullName: 'Asam Nitrat', pH: 1, type: 'Asam Kuat' },
+                { id: 'H2SO4', name: 'H₂SO₄', fullName: 'Asam Sulfat', pH: 1, type: 'Asam Kuat' }
+            ],
+            acidWeak: [
+                { id: 'CH3COOH', name: 'CH₃COOH', fullName: 'Asam Asetat', pH: 4.5, type: 'Asam Lemah' },
+                { id: 'H2CO3', name: 'H₂CO₃', fullName: 'Asam Karbonat', pH: 5.5, type: 'Asam Lemah' },
+                { id: 'HCN', name: 'HCN', fullName: 'Asam Sianida', pH: 5, type: 'Asam Lemah' }
+            ],
+            baseStrong: [
+                { id: 'NaOH', name: 'NaOH', fullName: 'Natrium Hidroksida', pH: 14, type: 'Basa Kuat' },
+                { id: 'KOH', name: 'KOH', fullName: 'Kalium Hidroksida', pH: 14, type: 'Basa Kuat' },
+                { id: 'CaOH2', name: 'Ca(OH)₂', fullName: 'Kalsium Hidroksida', pH: 13, type: 'Basa Kuat' }
+            ],
+            baseWeak: [
+                { id: 'NH4OH', name: 'NH₄OH', fullName: 'Amonia', pH: 10, type: 'Basa Lemah' },
+                { id: 'AlOH3', name: 'Al(OH)₃', fullName: 'Aluminium Hidroksida', pH: 9, type: 'Basa Lemah' }
+            ]
+        };
+
+        const indicators = [
+            { 
+                id: 'metilJingga', 
+                name: 'Metil Jingga', 
+                minpH: 3.1, 
+                maxpH: 4.4, 
+                colorAcid: '#ff6347',
+                colorBase: '#ffa500',
+                description: 'pH 3.1–4.4, jingga → merah'
+            },
+            { 
+                id: 'bromtimolBiru', 
+                name: 'Bromtimol Biru', 
+                minpH: 6.0, 
+                maxpH: 7.6, 
+                colorAcid: '#ffeb3b',
+                colorBase: '#2196f3',
+                description: 'pH 6.0–7.6, kuning → biru'
+            },
+            { 
+                id: 'fenolftalein', 
+                name: 'Fenolftalein', 
+                minpH: 8.3, 
+                maxpH: 10.0, 
+                colorAcid: 'transparent',
+                colorBase: '#ff69b4',
+                description: 'pH 8.3–10.0, tidak berwarna → merah muda'
+            },
+            { 
+                id: 'lakmus', 
+                name: 'Lakmus', 
+                minpH: 4.5, 
+                maxpH: 8.3, 
+                colorAcid: '#ff4444',
+                colorBase: '#4444ff',
+                description: 'pH 4.5–8.3, merah → biru'
+            },
+            { 
+                id: 'kubisUngu', 
+                name: 'Ekstrak Kubis Ungu', 
+                minpH: 2, 
+                maxpH: 12, 
+                colorAcid: '#ff0066',
+                colorNeutral: '#9c27b0',
+                colorBase: '#4caf50',
+                description: 'pH 2–12, merah → ungu → hijau'
+            },
+            { 
+                id: 'kunyit', 
+                name: 'Kunyit', 
+                minpH: 7.5, 
+                maxpH: 9.0, 
+                colorAcid: '#ffeb3b',
+                colorBase: '#8b4513',
+                description: 'pH 7.5–9.0, kuning → coklat kemerahan'
+            }
+        ];
+
+        // Game state
+        let currentMode = 'experiment';
+        let selectedSolution = null;
+        let selectedIndicator = null;
+        let secondBeakerActive = false;
+        let beaker1State = { solution: null, indicator: null, pH: 7 };
+        let beaker2State = { solution: null, indicator: null, pH: 7 };
+
+        // Challenge mode state
+        let challengeScore = 0;
+        let challengeRound = 1;
+        let currentChallenge = null;
+
+        // Artistic mode state
+        let mixer = { indicator1: null, indicator2: null };
+
+        // Initialize
+        function init() {
+            renderSolutionList();
+            renderIndicatorList();
+            initPHSlider();
+            renderTrayekChart();
+        }
+
+        function renderSolutionList() {
+            const container = document.getElementById('solutionList');
+            let html = '';
+            
+            const allSolutions = [
+                ...solutions.acidStrong,
+                ...solutions.acidWeak,
+                ...solutions.baseStrong,
+                ...solutions.baseWeak
+            ];
+            
+            allSolutions.forEach(sol => {
+                html += `
+                    <div class="solution-item" onclick="selectSolution('${sol.id}')">
+                        <strong>${sol.name}</strong>
+                        <small>${sol.fullName} (${sol.type})</small>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+
+        function renderIndicatorList() {
+            const container = document.getElementById('indicatorList');
+            let html = '';
+            
+            indicators.forEach(ind => {
+                html += `
+                    <div class="indicator-item" onclick="selectIndicator('${ind.id}')">
+                        <strong>${ind.name}</strong>
+                        <small>${ind.description}</small>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+
+        function selectSolution(id) {
+            const allSolutions = [
+                ...solutions.acidStrong,
+                ...solutions.acidWeak,
+                ...solutions.baseStrong,
+                ...solutions.baseWeak
+            ];
+            
+            selectedSolution = allSolutions.find(s => s.id === id);
+            
+            // Update UI
+            document.querySelectorAll('.solution-item').forEach(el => {
+                el.classList.remove('selected');
+            });
+            event.target.closest('.solution-item').classList.add('selected');
+            
+            // Update beaker
+            if (!secondBeakerActive || beaker1State.solution === null) {
+                beaker1State.solution = selectedSolution;
+                beaker1State.pH = selectedSolution.pH;
+                document.getElementById('beakerLabel1').textContent = selectedSolution.name;
+                document.getElementById('phSlider').value = selectedSolution.pH;
+                updatePHDisplay();
+                updateBeaker(1);
+            } else {
+                beaker2State.solution = selectedSolution;
+                beaker2State.pH = selectedSolution.pH;
+                document.getElementById('beakerLabel2').textContent = selectedSolution.name;
+                updateBeaker(2);
+            }
+        }
+
+        function selectIndicator(id) {
+            selectedIndicator = indicators.find(i => i.id === id);
+            
+            // Update UI
+            document.querySelectorAll('.indicator-item').forEach(el => {
+                el.classList.remove('selected');
+            });
+            event.target.closest('.indicator-item').classList.add('selected');
+        }
+
+        function addIndicator() {
+            if (!selectedSolution || !selectedIndicator) {
+                alert('Pilih larutan dan indikator terlebih dahulu!');
+                return;
+            }
+            
+            if (!secondBeakerActive || beaker1State.indicator === null) {
+                beaker1State.indicator = selectedIndicator;
+                updateBeaker(1);
+                showExperimentFeedback(beaker1State);
+            } else {
+                beaker2State.indicator = selectedIndicator;
+                updateBeaker(2);
+                showExperimentFeedback(beaker2State);
+            }
+        }
+
+        function getIndicatorColor(indicator, pH) {
+            if (!indicator) return '#e3f2fd';
+            
+            if (indicator.id === 'kubisUngu') {
+                if (pH < 4) return indicator.colorAcid;
+                else if (pH < 8) return indicator.colorNeutral;
+                else return indicator.colorBase;
+            }
+            
+            if (pH < indicator.minpH) {
+                return indicator.colorAcid || '#e3f2fd';
+            } else if (pH > indicator.maxpH) {
+                return indicator.colorBase || '#e3f2fd';
+            } else {
+                // Transition zone - blend colors
+                const ratio = (pH - indicator.minpH) / (indicator.maxpH - indicator.minpH);
+                return blendColors(indicator.colorAcid, indicator.colorBase, ratio);
+            }
+        }
+
+        function blendColors(color1, color2, ratio) {
+            if (color1 === 'transparent') return color2;
+            if (color2 === 'transparent') return color1;
+            
+            const c1 = hexToRgb(color1);
+            const c2 = hexToRgb(color2);
+            
+            const r = Math.round(c1.r + (c2.r - c1.r) * ratio);
+            const g = Math.round(c1.g + (c2.g - c1.g) * ratio);
+            const b = Math.round(c1.b + (c2.b - c1.b) * ratio);
+            
+            return `rgb(${r}, ${g}, ${b})`;
+        }
+
+        function hexToRgb(hex) {
+            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? {
+                r: parseInt(result[1], 16),
+                g: parseInt(result[2], 16),
+                b: parseInt(result[3], 16)
+            } : { r: 227, g: 242, b: 253 };
+        }
+
+        function updateBeaker(beakerNum) {
+            const state = beakerNum === 1 ? beaker1State : beaker2State;
+            const beaker = document.getElementById(`beaker${beakerNum}`);
+            const marker = document.getElementById(`phMarker${beakerNum}`);
+            
+            const color = getIndicatorColor(state.indicator, state.pH);
+            beaker.style.setProperty('--solution-color', color);
+            
+            // Update pH marker position
+            const position = ((14 - state.pH) / 14) * 100;
+            marker.style.top = `${position}%`;
+            marker.setAttribute('data-ph', state.pH.toFixed(1));
+        }
+
+        function initPHSlider() {
+            const slider = document.getElementById('phSlider');
+            slider.addEventListener('input', function() {
+                const pH = parseFloat(this.value);
+                beaker1State.pH = pH;
+                if (secondBeakerActive) {
+                    beaker2State.pH = pH;
+                }
+                updatePHDisplay();
+                updateBeaker(1);
+                if (secondBeakerActive) updateBeaker(2);
+            });
+        }
+
+        function updatePHDisplay() {
+            const pH = document.getElementById('phSlider').value;
+            document.getElementById('phValueDisplay').textContent = `pH: ${parseFloat(pH).toFixed(1)}`;
+        }
+
+        function toggleSecondBeaker() {
+            secondBeakerActive = !secondBeakerActive;
+            const wrapper = document.getElementById('beaker2Wrapper');
+            wrapper.classList.toggle('hidden');
+            
+            if (!secondBeakerActive) {
+                beaker2State = { solution: null, indicator: null, pH: 7 };
+            }
+        }
+
+        function showExperimentFeedback(state) {
+            const feedback = document.getElementById('experimentFeedback');
+            const result = document.getElementById('experimentResult');
+            
+            let text = `<strong>Larutan:</strong> ${state.solution.name} (${state.solution.type})<br>`;
+            text += `<strong>Indikator:</strong> ${state.indicator.name}<br>`;
+            text += `<strong>pH:</strong> ${state.pH.toFixed(1)}<br>`;
+            
+            // Check sensitivity
+            if (state.pH >= state.indicator.minpH && state.pH <= state.indicator.maxpH) {
+                text += `<strong style="color: #2ecc71;">✓ Indikator sensitif pada pH ini!</strong><br>`;
+                text += `Perubahan warna terlihat jelas karena pH berada dalam trayek indikator.`;
+            } else {
+                text += `<strong style="color: #e74c3c;">✗ Indikator kurang sensitif</strong><br>`;
+                text += `pH larutan di luar trayek indikator. Pilih indikator yang sesuai.`;
+            }
+            
+            result.innerHTML = text;
+            feedback.classList.remove('hidden');
+        }
+
+        function resetExperiment() {
+            beaker1State = { solution: null, indicator: null, pH: 7 };
+            beaker2State = { solution: null, indicator: null, pH: 7 };
+            selectedSolution = null;
+            selectedIndicator = null;
+            secondBeakerActive = false;
+            
+            document.getElementById('beaker1').style.setProperty('--solution-color', '#e3f2fd');
+            document.getElementById('beaker2').style.setProperty('--solution-color', '#e3f2fd');
+            document.getElementById('beakerLabel1').textContent = 'Pilih Larutan';
+            document.getElementById('beakerLabel2').textContent = 'Beaker 2';
+            document.getElementById('beaker2Wrapper').classList.add('hidden');
+            document.getElementById('experimentFeedback').classList.add('hidden');
+            document.getElementById('phSlider').value = 7;
+            updatePHDisplay();
+            
+            document.querySelectorAll('.solution-item, .indicator-item').forEach(el => {
+                el.classList.remove('selected');
+            });
+        }
+
+        // Challenge Mode Functions
+        function generateChallenge() {
+            const allSolutions = [
+                ...solutions.acidStrong,
+                ...solutions.acidWeak,
+                ...solutions.baseStrong,
+                ...solutions.baseWeak
+            ];
+            
+            const solution = allSolutions[Math.floor(Math.random() * allSolutions.length)];
+            const indicator = indicators[Math.floor(Math.random() * indicators.length)];
+            
+            currentChallenge = {
+                solution: solution,
+                indicator: indicator,
+                color: getIndicatorColor(indicator, solution.pH),
+                correctAnswer: solution.type
+            };
+            
+            displayChallenge();
+        }
+
+        function displayChallenge() {
+            const beaker = document.getElementById('mysteryBeaker');
+            const label = document.getElementById('mysteryLabel');
+            const colorDesc = document.getElementById('colorDescription');
+            
+            beaker.style.setProperty('--mystery-color', currentChallenge.color);
+            label.textContent = `Indikator: ${currentChallenge.indicator.name}`;
+            colorDesc.textContent = getColorName(currentChallenge.color);
+            
+            // Generate answer options
+            const options = ['Asam Kuat', 'Asam Lemah', 'Basa Kuat', 'Basa Lemah'];
+            const container = document.getElementById('answerOptions');
+            let html = '';
+            
+            options.forEach(opt => {
+                html += `
+                    <button class="answer-btn" onclick="checkAnswer('${opt}')">
+                        ${opt}
+                    </button>
+                `;
+            });
+            
+            container.innerHTML = html;
+            document.getElementById('challengeFeedback').classList.add('hidden');
+        }
+
+        function getColorName(color) {
+            if (color === 'transparent' || color === '#e3f2fd') return 'Tidak berwarna/Bening';
+            if (color.includes('255, 0') || color.includes('ff0') || color.includes('#ff')) return 'Merah/Merah Muda';
+            if (color.includes('0, 0, 255') || color.includes('33, 150, 243')) return 'Biru';
+            if (color.includes('255, 235, 59')) return 'Kuning';
+            if (color.includes('76, 175, 80')) return 'Hijau';
+            if (color.includes('156, 39, 176')) return 'Ungu';
+            if (color.includes('139, 69, 19')) return 'Coklat';
+            return 'Campuran Warna';
+        }
+
+        function checkAnswer(answer) {
+            const buttons = document.querySelectorAll('.answer-btn');
+            buttons.forEach(btn => {
+                btn.disabled = true;
+                if (btn.textContent.trim() === currentChallenge.correctAnswer) {
+                    btn.classList.add('correct');
+                } else if (btn.textContent.trim() === answer) {
+                    btn.classList.add('wrong');
+                }
+            });
+            
+            const feedback = document.getElementById('challengeFeedback');
+            const explanation = document.getElementById('challengeExplanation');
+            
+            if (answer === currentChallenge.correctAnswer) {
+                challengeScore += 10;
+                explanation.innerHTML = `
+                    <strong style="color: #2ecc71;">✓ Benar!</strong><br>
+                    Indikator ${currentChallenge.indicator.name} menunjukkan warna ${getColorName(currentChallenge.color)} 
+                    → pH ${currentChallenge.solution.pH} → Larutan bersifat ${currentChallenge.correctAnswer}.<br>
+                    <em>Trayek ${currentChallenge.indicator.name}: ${currentChallenge.indicator.description}</em>
+                `;
+            } else {
+                explanation.innerHTML = `
+                    <strong style="color: #e74c3c;">✗ Kurang Tepat</strong><br>
+                    Jawaban yang benar adalah <strong>${currentChallenge.correctAnswer}</strong>.<br>
+                    Indikator ${currentChallenge.indicator.name} pada pH ${currentChallenge.solution.pH} 
+                    menunjukkan larutan bersifat ${currentChallenge.correctAnswer}.<br>
+                    <em>Trayek ${currentChallenge.indicator.name}: ${currentChallenge.indicator.description}</em>
+                `;
+            }
+            
+            feedback.classList.remove('hidden');
+            document.getElementById('challengeScore').textContent = challengeScore;
+        }
+
+        function nextChallenge() {
+            if (challengeRound >= 5) {
+                showChallengeResults();
+                return;
+            }
+            
+            challengeRound++;
+            document.getElementById('challengeRound').textContent = challengeRound;
+            generateChallenge();
+        }
+
+        function showChallengeResults() {
+            const feedback = document.getElementById('challengeFeedback');
+            const explanation = document.getElementById('challengeExplanation');
+            
+            explanation.innerHTML = `
+                <h3 style="color: #667eea;">🎉 Challenge Selesai!</h3>
+                <p style="font-size: 1.3em; margin: 20px 0;">
+                    <strong>Skor Akhir: ${challengeScore} / 50</strong>
+                </p>
+                <p>
+                    ${challengeScore >= 40 ? '🌟 Luar biasa! Anda ahli indikator!' : 
+                      challengeScore >= 30 ? '👍 Bagus! Terus berlatih!' : 
+                      '💪 Coba lagi untuk meningkatkan pemahaman!'}
+                </p>
+            `;
+            
+            feedback.classList.remove('hidden');
+            document.getElementById('answerOptions').innerHTML = '';
+        }
+
+        function restartChallenge() {
+            challengeScore = 0;
+            challengeRound = 1;
+            document.getElementById('challengeScore').textContent = challengeScore;
+            document.getElementById('challengeRound').textContent = challengeRound;
+            generateChallenge();
+        }
+
+        // Guided Mode Functions
+        function renderTrayekChart() {
+            const container = document.getElementById('trayekChart');
+            let html = '';
+            
+            indicators.forEach((ind, index) => {
+                const gradient = createTrayekGradient(ind);
+                html += `
+                    <div class="indicator-row">
+                        <div class="indicator-name">${ind.name}</div>
+                        <div class="color-bar" style="background: ${gradient};">
+                            ${createTransitionMarkers(ind, index)}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+
+        function createTrayekGradient(indicator) {
+            if (indicator.id === 'kubisUngu') {
+                return `linear-gradient(to right, 
+                    ${indicator.colorAcid} 0%, 
+                    ${indicator.colorAcid} 28%, 
+                    ${indicator.colorNeutral} 57%, 
+                    ${indicator.colorBase} 85%, 
+                    ${indicator.colorBase} 100%)`;
+            }
+            
+            const startPos = (indicator.minpH / 14) * 100;
+            const endPos = (indicator.maxpH / 14) * 100;
+            
+            const acidColor = indicator.colorAcid === 'transparent' ? '#e3f2fd' : indicator.colorAcid;
+            
+            return `linear-gradient(to right, 
+                ${acidColor} 0%, 
+                ${acidColor} ${startPos}%, 
+                ${indicator.colorBase} ${endPos}%, 
+                ${indicator.colorBase} 100%)`;
+        }
+
+        function createTransitionMarkers(indicator, index) {
+            let html = '';
+            const minPos = (indicator.minpH / 14) * 100;
+            const maxPos = (indicator.maxpH / 14) * 100;
+            
+            html += `<div class="transition-marker" style="left: ${minPos}%;" 
+                     onclick="markTransition(${index}, ${indicator.minpH})"></div>`;
+            html += `<div class="transition-marker" style="left: ${maxPos}%;" 
+                     onclick="markTransition(${index}, ${indicator.maxpH})"></div>`;
+            
+            return html;
+        }
+
+        function markTransition(indicatorIndex, pH) {
+            alert(`Titik transisi ditandai!\n\nIndikator: ${indicators[indicatorIndex].name}\npH: ${pH}\n\nIni adalah daerah dimana indikator paling sensitif terhadap perubahan pH.`);
+        }
+
+        // Artistic Mode Functions
+        function selectForMixer(slotNum) {
+            if (!selectedIndicator) {
+                alert('Pilih indikator dari panel kiri terlebih dahulu!');
+                return;
+            }
+            
+            const slot = document.getElementById(`mixerSlot${slotNum}`);
+            
+            if (slotNum === 1) {
+                mixer.indicator1 = selectedIndicator;
+                slot.innerHTML = `<strong>${selectedIndicator.name}</strong>`;
+                slot.classList.add('filled');
+                slot.style.setProperty('--indicator-color', selectedIndicator.colorBase);
+            } else {
+                mixer.indicator2 = selectedIndicator;
+                slot.innerHTML = `<strong>${selectedIndicator.name}</strong>`;
+                slot.classList.add('filled');
+                slot.style.setProperty('--indicator-color', selectedIndicator.colorBase);
+            }
+        }
+
+        function mixIndicators() {
+            if (!mixer.indicator1 || !mixer.indicator2) {
+                alert('Pilih dua indikator terlebih dahulu!');
+                return;
+            }
+            
+            // Simulate mixing
+            const pH = 7; // Neutral pH for demo
+            const color1 = getIndicatorColor(mixer.indicator1, pH);
+            const color2 = getIndicatorColor(mixer.indicator2, pH);
+            const mixedColor = blendColors(color1, color2, 0.5);
+            
+            // Show result
+            const resultSlot = document.getElementById('mixerResult');
+            resultSlot.style.setProperty('--indicator-color', mixedColor);
+            resultSlot.innerHTML = '<strong>Campuran</strong>';
+            resultSlot.classList.add('filled');
+            
+            // Show detailed result
+            const resultContainer = document.getElementById('mixedResult');
+            const resultBeaker = document.getElementById('resultBeaker');
+            const resultInfo = document.getElementById('mixedCharacteristics');
+            
+            resultBeaker.style.setProperty('--mixed-color', mixedColor);
+            
+            const minpH = Math.min(mixer.indicator1.minpH, mixer.indicator2.minpH);
+            const maxpH = Math.max(mixer.indicator1.maxpH, mixer.indicator2.maxpH);
+            
+            resultInfo.innerHTML = `
+                <strong>Indikator 1:</strong> ${mixer.indicator1.name} (${mixer.indicator1.description})<br>
+                <strong>Indikator 2:</strong> ${mixer.indicator2.name} (${mixer.indicator2.description})<br>
+                <strong>Rentang pH Gabungan:</strong> ${minpH} - ${maxpH}<br>
+                <strong>Karakteristik:</strong> Indikator campuran ini sensitif pada rentang pH yang lebih luas, 
+                menggabungkan sensitivitas kedua indikator. Warna yang dihasilkan merupakan kombinasi dari 
+                kedua indikator pada pH tertentu.
+            `;
+            
+            resultContainer.classList.remove('hidden');
+        }
+
+        function resetMixer() {
+            mixer = { indicator1: null, indicator2: null };
+            
+            document.getElementById('mixerSlot1').innerHTML = 'Klik untuk pilih<br>Indikator 1';
+            document.getElementById('mixerSlot2').innerHTML = 'Klik untuk pilih<br>Indikator 2';
+            document.getElementById('mixerResult').innerHTML = '<span>Hasil Campuran</span>';
+            
+            document.querySelectorAll('.mixer-slot').forEach(slot => {
+                slot.classList.remove('filled');
+                slot.style.removeProperty('--indicator-color');
+            });
+            
+            document.getElementById('mixedResult').classList.add('hidden');
+        }
+
+        // Mode Switching
+        function switchMode(mode) {
+            currentMode = mode;
+            
+            // Update button states
+            document.querySelectorAll('.mode-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Hide all modes
+            document.getElementById('experimentMode').classList.add('hidden');
+            document.getElementById('challengeMode').classList.add('hidden');
+            document.getElementById('guidedMode').classList.add('hidden');
+            document.getElementById('artisticMode').classList.add('hidden');
+            
+            // Show selected mode
+            if (mode === 'experiment') {
+                document.getElementById('experimentMode').classList.remove('hidden');
+            } else if (mode === 'challenge') {
+                document.getElementById('challengeMode').classList.remove('hidden');
+                if (challengeRound === 1 && challengeScore === 0) {
+                    generateChallenge();
+                }
+            } else if (mode === 'guided') {
+                document.getElementById('guidedMode').classList.remove('hidden');
+            } else if (mode === 'artistic') {
+                document.getElementById('artisticMode').classList.remove('hidden');
+            }
+        }
+
+        // Help Modal Functions
+        function toggleHelp() {
+            const modal = document.getElementById('helpModal');
+            modal.classList.toggle('active');
+        }
+
+        // Close modal when clicking outside
+        document.addEventListener('click', function(event) {
+            const modal = document.getElementById('helpModal');
+            if (event.target === modal) {
+                modal.classList.remove('active');
+            }
+        });
+
+        // Initialize on load
+        window.onload = init;
+    </script>
+</body>
+</html>
